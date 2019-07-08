@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+docker run --network=none --rm -v `git root`:/mnt/git  fayoh/privategit "$@"

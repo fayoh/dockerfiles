@@ -1,14 +1,16 @@
 FROM ruby
 
-ARG http_proxy
-ARG https_proxy
-
 ENV DEBIAN_FRONTEND=noninteractive
-ENV http_proxy=$http_proxy https_proxy=$https_proxy
-RUN apt-get -y update && apt-get -y install libicu-dev cmake && rm -rf /var/lib/apt/lists/*
-RUN gem install github-linguist
-RUN gem install gollum
-RUN gem install org-ruby  # optional
+RUN     http_proxy=http://proxycluster.se.axis.com:3128 && \
+	https_proxy=http://proxycluster.se.axis.com:3128 && \
+	apt-get -y update && \
+	apt-get -y install libicu-dev cmake && \
+	rm -rf /var/lib/apt/lists/* && \
+	gem install github-linguist && \
+	gem install gollum && \
+	unset http_proxy &&\
+	unset https_proxy
+COPY config.rb /etc
 WORKDIR /wiki
-ENTRYPOINT ["gollum", "--port", "80"]
+ENTRYPOINT ["gollum", "--config", "/etc/config.rb"]
 EXPOSE 80

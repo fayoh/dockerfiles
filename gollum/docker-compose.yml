@@ -1,0 +1,15 @@
+version: "2"
+services:
+
+  wiki:
+    image: fayoh/gollum
+    container_name: gollum-wiki
+    volumes:
+      - ~/Documents/gollum-wiki:/wiki
+    network_mode: "service:plantuml"
+
+  plantuml:
+    image: plantuml/plantuml-server:tomcat
+    container_name: plantuml-server
+    ports:
+      - "8000:4567"
